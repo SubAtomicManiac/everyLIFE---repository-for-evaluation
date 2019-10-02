@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.everylifetask.*
 import com.example.everylifetask.api.TasksApiService
+import com.example.everylifetask.commons.LayoutManagerType
 import com.example.everylifetask.commons.TaskType
 import com.example.everylifetask.viewmodel.TasksViewModel
 import com.example.everylifetask.viewmodel.TasksViewModelInterface
@@ -17,8 +18,6 @@ import com.example.everylifetask.viewmodel.TasksViewModelInterface
 class TasksListFragment : Fragment() {
 
     lateinit var viewModel: TasksViewModelInterface
-
-    enum class LayoutManagerType { GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER }
 
     lateinit var currentLayoutManagerType: LayoutManagerType
     lateinit var recyclerView: RecyclerView
@@ -54,19 +53,19 @@ class TasksListFragment : Fragment() {
 
         val filterGeneral: View = rootView.findViewById(R.id.filter_general)
         filterGeneral.setOnClickListener {
-            viewModel.filterClicked(TaskType.general)
+            viewModel.filterClicked(TaskType.GENERAL)
         }
         val filterMedication: View = rootView.findViewById(R.id.filter_medication)
         filterMedication.setOnClickListener {
-            viewModel.filterClicked(TaskType.medication)
+            viewModel.filterClicked(TaskType.MEDICATION)
         }
         val filterHydration: View = rootView.findViewById(R.id.filter_hydration)
         filterHydration.setOnClickListener {
-            viewModel.filterClicked(TaskType.hydration)
+            viewModel.filterClicked(TaskType.HYDRATION)
         }
         val filterNutrition: View = rootView.findViewById(R.id.filter_nutrition)
         filterNutrition.setOnClickListener {
-            viewModel.filterClicked(TaskType.nutrition)
+            viewModel.filterClicked(TaskType.NUTRITION)
         }
         return rootView
     }
