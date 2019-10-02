@@ -15,14 +15,10 @@ import com.example.everylifetask.views.TasksListFragment
 class TasksViewModel(val tasksApiService: TasksApiServicing?, val fragment: TasksListFragment?) :
     ViewModel(), TasksViewModelInterface {
     var tasks: Array<Task>? = null
-    var filteredTasks: Array<Task>? = null
-
     var filteredTasksLiveData : MutableLiveData<Array<Task>>? = MutableLiveData<Array<Task>>()
 
     override fun reloadTable(context: Context) {
         tasks = tasksApiService?.getTasks(context)
-        filteredTasks = tasks
-
         filteredTasksLiveData?.value = tasks
     }
 
@@ -39,16 +35,11 @@ class TasksViewModel(val tasksApiService: TasksApiServicing?, val fragment: Task
         view1?.visibility = View.INVISIBLE
     }
 
-    override fun getFilteredTasksList(): Array<Task>? {
-        return filteredTasks
-    }
-
     override fun getFilteredTasksData() = filteredTasksLiveData
 
     override fun filterClicked(tag: Any?) {
 //        TODO("B: implement this so that the list will show only the tasks that have the selected TaskType")
-        if (filteredTasks?.get(0)?.type?.equals(tag as TaskType)!!) {
-            filteredTasks = tasks
+        if (filteredTasksLiveData?.value?.get(0)?.type?.equals(tag as TaskType)!!) {
             filteredTasksLiveData?.value = tasks
         } else {
             val list =
@@ -56,7 +47,6 @@ class TasksViewModel(val tasksApiService: TasksApiServicing?, val fragment: Task
                     val taskType = tag as TaskType
                     it.type.equals(taskType)
                 }
-            filteredTasks = list?.toTypedArray()
             filteredTasksLiveData?.value = list?.toTypedArray()
         }
     }
