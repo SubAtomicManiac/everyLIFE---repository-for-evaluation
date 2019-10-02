@@ -1,4 +1,4 @@
-package com.example.everylifetask
+package com.example.everylifetask.views
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

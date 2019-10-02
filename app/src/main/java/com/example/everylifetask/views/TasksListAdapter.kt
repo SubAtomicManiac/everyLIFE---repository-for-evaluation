@@ -1,4 +1,4 @@
-package com.example.everylifetask
+package com.example.everylifetask.views
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -6,6 +6,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.everylifetask.R
+import com.example.everylifetask.models.Task
+import com.example.everylifetask.commons.TaskType
 
 class TasksListAdapter(private var tasks: Array<Task>) :
     RecyclerView.Adapter<TaskViewHolder>() {

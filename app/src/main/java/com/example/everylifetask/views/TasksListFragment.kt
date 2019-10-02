@@ -1,4 +1,4 @@
-package com.example.everylifetask
+package com.example.everylifetask.views
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,6 +8,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.everylifetask.*
+import com.example.everylifetask.api.TasksApiService
+import com.example.everylifetask.commons.TaskType
+import com.example.everylifetask.viewmodel.TasksViewModel
+import com.example.everylifetask.viewmodel.TasksViewModelInterface
 
 class TasksListFragment : Fragment() {
 
@@ -26,11 +31,14 @@ class TasksListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.tasks_list_fragment, container, false).apply { tag = TAG }
+        val rootView = inflater.inflate(R.layout.tasks_list_fragment, container, false).apply { tag =
+            TAG
+        }
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(activity) as RecyclerView.LayoutManager
-        currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
+        currentLayoutManagerType =
+            LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
         if (savedInstanceState != null) {
             currentLayoutManagerType = savedInstanceState.getSerializable(KEY_LAYOUT_MANAGER) as LayoutManagerType
@@ -78,12 +86,16 @@ class TasksListFragment : Fragment() {
 
         when (layoutManagerType) {
             LayoutManagerType.GRID_LAYOUT_MANAGER -> {
-                layoutManager = GridLayoutManager(activity, SPAN_COUNT)
-                currentLayoutManagerType = LayoutManagerType.GRID_LAYOUT_MANAGER
+                layoutManager = GridLayoutManager(activity,
+                    SPAN_COUNT
+                )
+                currentLayoutManagerType =
+                    LayoutManagerType.GRID_LAYOUT_MANAGER
             }
             LayoutManagerType.LINEAR_LAYOUT_MANAGER -> {
                 layoutManager = LinearLayoutManager(activity)
-                currentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER
+                currentLayoutManagerType =
+                    LayoutManagerType.LINEAR_LAYOUT_MANAGER
             }
         }
 

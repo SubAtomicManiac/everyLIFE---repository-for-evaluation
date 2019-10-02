@@ -1,7 +1,8 @@
-package com.example.everylifetask
+package com.example.everylifetask.views
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.example.everylifetask.R
 
 class MainActivity : AppCompatActivity() {
 

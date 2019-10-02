@@ -1,6 +1,7 @@
-package com.example.everylifetask
+package com.example.everylifetask.api
 
 import android.content.Context
+import com.example.everylifetask.models.Task
 import com.google.gson.Gson
 
 class TasksApiService : TasksApiServicing {

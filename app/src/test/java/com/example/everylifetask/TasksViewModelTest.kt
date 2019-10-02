@@ -1,6 +1,10 @@
 package com.example.everylifetask
 
 import android.content.Context
+import com.example.everylifetask.models.Task
+import com.example.everylifetask.api.TasksApiServicing
+import com.example.everylifetask.commons.TaskType
+import com.example.everylifetask.viewmodel.TasksViewModel
 import org.hamcrest.Matchers.equalTo
 import org.junit.Assert
 import org.junit.Test
@@ -12,7 +16,7 @@ class TasksViewModelTest {
     @Test
     fun testRefreshTasksWithOnlyOneTaskWillOnlyReturnOneFilteredTask() {
         // Given
-        val task = Task(1, "some name", "some description",  TaskType.general)
+        val task = Task(1, "some name", "some description", TaskType.general)
         val tasksService = MockTasksService(arrayOf(task))
         val viewModel = TasksViewModel(tasksService, null)
 
@@ -29,7 +33,7 @@ class TasksViewModelTest {
     @Test
     fun testFilterTasksByGeneralWillOnlyReturnGeneralTasks() {
         // TODO B: Implement this test
-        val t = Task(1, "a", "a",  TaskType.general)
+        val t = Task(1, "a", "a", TaskType.general)
         val tas = MockTasksService(arrayOf(t))
         val vm = TasksViewModel(tas, null)
         vm.reloadTable(androidx.test.core.app.ApplicationProvider.getApplicationContext())
