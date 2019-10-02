@@ -53,19 +53,19 @@ class TasksListFragment : Fragment() {
 
         val filterGeneral: View = rootView.findViewById(R.id.filter_general)
         filterGeneral.setOnClickListener {
-            viewModel.filterClicked(TaskType.GENERAL)
+            viewModel.filterClicked(TaskType.general)
         }
         val filterMedication: View = rootView.findViewById(R.id.filter_medication)
         filterMedication.setOnClickListener {
-            viewModel.filterClicked(TaskType.MEDICATION)
+            viewModel.filterClicked(TaskType.medication)
         }
         val filterHydration: View = rootView.findViewById(R.id.filter_hydration)
         filterHydration.setOnClickListener {
-            viewModel.filterClicked(TaskType.HYDRATION)
+            viewModel.filterClicked(TaskType.hydration)
         }
         val filterNutrition: View = rootView.findViewById(R.id.filter_nutrition)
         filterNutrition.setOnClickListener {
-            viewModel.filterClicked(TaskType.NUTRITION)
+            viewModel.filterClicked(TaskType.nutrition)
         }
         return rootView
     }

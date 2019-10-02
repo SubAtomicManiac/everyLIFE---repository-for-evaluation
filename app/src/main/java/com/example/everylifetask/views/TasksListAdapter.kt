@@ -34,16 +34,16 @@ class TasksListAdapter(private var tasks: Array<Task>) :
 
     private fun getTaskTypeImage(type: TaskType, context: Context): Drawable? {
         when (type) {
-            TaskType.GENERAL -> {
+            TaskType.general -> {
                 return ContextCompat.getDrawable(context, R.mipmap.general)
             }
-            TaskType.HYDRATION -> {
+            TaskType.hydration -> {
                 return ContextCompat.getDrawable(context, R.mipmap.hydration)
             }
-            TaskType.MEDICATION -> {
+            TaskType.medication -> {
                 return ContextCompat.getDrawable(context, R.mipmap.medication)
             }
-            TaskType.NUTRITION -> {
+            TaskType.nutrition -> {
                 return ContextCompat.getDrawable(context, R.mipmap.nutrition)
             }
         }
