@@ -10,12 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.everylifetask.*
 import com.example.everylifetask.api.TasksApiService
+import com.example.everylifetask.api.TasksApiServicing
 import com.example.everylifetask.commons.LayoutManagerType
 import com.example.everylifetask.commons.TaskType
 import com.example.everylifetask.models.Task
 import com.example.everylifetask.viewmodel.TasksViewModel
+import com.example.everylifetask.viewmodel.TasksViewModelFactory
 import com.example.everylifetask.viewmodel.TasksViewModelInterface
 
 class TasksListFragment : Fragment(), LifecycleOwner{
@@ -29,7 +32,9 @@ class TasksListFragment : Fragment(), LifecycleOwner{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = TasksViewModel(TasksApiService(), this)
+        viewModel = ViewModelProviders
+            .of(this, TasksViewModelFactory(TasksApiService(),this))
+            .get(TasksViewModel::class.java)
         viewModel.beginRefreshing()
     }
 

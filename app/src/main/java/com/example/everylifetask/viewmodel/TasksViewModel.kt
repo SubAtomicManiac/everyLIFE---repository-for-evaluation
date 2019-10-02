@@ -5,26 +5,19 @@ import android.content.Context
 import android.view.View
 import android.widget.ProgressBar
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.everylifetask.R
 import com.example.everylifetask.commons.TaskType
 import com.example.everylifetask.models.Task
 import com.example.everylifetask.api.TasksApiServicing
-import com.example.everylifetask.views.TasksListAdapter
 import com.example.everylifetask.views.TasksListFragment
 
-class TasksViewModel(tasksApiService: TasksApiServicing, fragment: TasksListFragment?) :
-    TasksViewModelInterface {
-    var tasksApiService: TasksApiServicing? = null
+class TasksViewModel(val tasksApiService: TasksApiServicing?, val fragment: TasksListFragment?) :
+    ViewModel(), TasksViewModelInterface {
     var tasks: Array<Task>? = null
     var filteredTasks: Array<Task>? = null
-    var fragment: TasksListFragment?
 
     var filteredTasksLiveData : MutableLiveData<Array<Task>>? = MutableLiveData<Array<Task>>()
-
-    init {
-        this.tasksApiService = tasksApiService
-        this.fragment = fragment
-    }
 
     override fun reloadTable(context: Context) {
         tasks = tasksApiService?.getTasks(context)
