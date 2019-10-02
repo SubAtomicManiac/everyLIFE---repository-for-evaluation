@@ -9,14 +9,13 @@ import android.view.ViewGroup
 import com.example.everylifetask.R
 import com.example.everylifetask.models.Task
 import com.example.everylifetask.commons.TaskType
+import com.example.everylifetask.commons.inflate
 
 class TasksListAdapter(private var tasks: Array<Task>) :
     RecyclerView.Adapter<TaskViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TaskViewHolder {
-        val v = LayoutInflater.from(viewGroup.context).inflate(R.layout.task_row_item, viewGroup, false)
-
-        return TaskViewHolder(v)
+        return TaskViewHolder(viewGroup.inflate(R.layout.task_row_item))
     }
 
     override fun getItemCount() = tasks.size
