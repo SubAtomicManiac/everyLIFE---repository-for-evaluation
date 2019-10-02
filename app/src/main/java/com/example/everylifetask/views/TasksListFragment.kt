@@ -104,6 +104,10 @@ class TasksListFragment : Fragment() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable(KEY_LAYOUT_MANAGER,currentLayoutManagerType)
+    }
 
     companion object {
         private val TAG = "TasksListFragment"
