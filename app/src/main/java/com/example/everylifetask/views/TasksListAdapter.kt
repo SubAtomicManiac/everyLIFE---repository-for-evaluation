@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.everylifetask.R
 import com.example.everylifetask.models.Task
@@ -33,21 +32,12 @@ class TasksListAdapter(private var tasks: Array<Task>) :
     }
 
     private fun getTaskTypeImage(type: TaskType, context: Context): Drawable? {
-        when (type) {
-            TaskType.general -> {
-                return ContextCompat.getDrawable(context, R.mipmap.general)
-            }
-            TaskType.hydration -> {
-                return ContextCompat.getDrawable(context, R.mipmap.hydration)
-            }
-            TaskType.medication -> {
-                return ContextCompat.getDrawable(context, R.mipmap.medication)
-            }
-            TaskType.nutrition -> {
-                return ContextCompat.getDrawable(context, R.mipmap.nutrition)
-            }
+        return when (type) {
+            TaskType.general -> ContextCompat.getDrawable(context, R.mipmap.general)
+            TaskType.hydration -> ContextCompat.getDrawable(context, R.mipmap.hydration)
+            TaskType.medication -> ContextCompat.getDrawable(context, R.mipmap.medication)
+            TaskType.nutrition -> ContextCompat.getDrawable(context, R.mipmap.nutrition)
         }
-        return null
     }
 
     public fun updateFilter(filteredTasks: Array<Task>) {
