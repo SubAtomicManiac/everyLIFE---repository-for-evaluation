@@ -1,27 +1,31 @@
 package com.example.everylifetask.views
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.example.everylifetask.*
 import com.example.everylifetask.api.TasksApiService
 import com.example.everylifetask.commons.LayoutManagerType
 import com.example.everylifetask.commons.TaskType
+import com.example.everylifetask.models.Task
 import com.example.everylifetask.viewmodel.TasksViewModel
 import com.example.everylifetask.viewmodel.TasksViewModelInterface
 
-class TasksListFragment : Fragment() {
+class TasksListFragment : Fragment(), LifecycleOwner{
 
     lateinit var viewModel: TasksViewModelInterface
 
     lateinit var currentLayoutManagerType: LayoutManagerType
     lateinit var recyclerView: RecyclerView
     lateinit var layoutManager: RecyclerView.LayoutManager
+    var layoutAdapter: TasksListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +39,8 @@ class TasksListFragment : Fragment() {
         }
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
-        layoutManager = LinearLayoutManager(activity) as RecyclerView.LayoutManager
+        layoutManager = LinearLayoutManager(activity)
+
         currentLayoutManagerType =
             LayoutManagerType.LINEAR_LAYOUT_MANAGER
 
@@ -46,8 +51,17 @@ class TasksListFragment : Fragment() {
 
         context?.let {
             viewModel.reloadTable(it)
-            viewModel.getFilteredTasksList()?.let {
-                recyclerView.adapter = TasksListAdapter(it)
+            viewModel.getFilteredTasksData()?.let{
+                it.observe(this@TasksListFragment, Observer<Array<Task>>{
+                    tasks -> if (layoutAdapter == null){
+                        layoutAdapter = TasksListAdapter(tasks)
+                        recyclerView.adapter = layoutAdapter
+                    }
+                    else {
+                        layoutAdapter?.updateFilter(tasks)
+                        layoutAdapter?.notifyDataSetChanged()
+                    }
+                })
             }
         }
 
@@ -85,7 +99,8 @@ class TasksListFragment : Fragment() {
 
         when (layoutManagerType) {
             LayoutManagerType.GRID_LAYOUT_MANAGER -> {
-                layoutManager = GridLayoutManager(activity,
+                layoutManager = GridLayoutManager(
+                    activity,
                     SPAN_COUNT
                 )
                 currentLayoutManagerType =

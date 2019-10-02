@@ -1,8 +1,10 @@
 package com.example.everylifetask.viewmodel
 
+
 import android.content.Context
 import android.view.View
 import android.widget.ProgressBar
+import androidx.lifecycle.MutableLiveData
 import com.example.everylifetask.R
 import com.example.everylifetask.commons.TaskType
 import com.example.everylifetask.models.Task
@@ -17,6 +19,8 @@ class TasksViewModel(tasksApiService: TasksApiServicing, fragment: TasksListFrag
     var filteredTasks: Array<Task>? = null
     var fragment: TasksListFragment?
 
+    var filteredTasksLiveData : MutableLiveData<Array<Task>>? = MutableLiveData<Array<Task>>()
+
     init {
         this.tasksApiService = tasksApiService
         this.fragment = fragment
@@ -25,6 +29,8 @@ class TasksViewModel(tasksApiService: TasksApiServicing, fragment: TasksListFrag
     override fun reloadTable(context: Context) {
         tasks = tasksApiService?.getTasks(context)
         filteredTasks = tasks
+
+        filteredTasksLiveData?.value = tasks
     }
 
     override fun beginRefreshing() {
@@ -44,10 +50,13 @@ class TasksViewModel(tasksApiService: TasksApiServicing, fragment: TasksListFrag
         return filteredTasks
     }
 
+    override fun getFilteredTasksData() = filteredTasksLiveData
+
     override fun filterClicked(tag: Any?) {
 //        TODO("B: implement this so that the list will show only the tasks that have the selected TaskType")
         if (filteredTasks?.get(0)?.type?.equals(tag as TaskType)!!) {
             filteredTasks = tasks
+            filteredTasksLiveData?.value = tasks
         } else {
             val list =
                 tasks?.filter {
@@ -55,9 +64,7 @@ class TasksViewModel(tasksApiService: TasksApiServicing, fragment: TasksListFrag
                     it.type.equals(taskType)
                 }
             filteredTasks = list?.toTypedArray()
+            filteredTasksLiveData?.value = list?.toTypedArray()
         }
-        val adapter: TasksListAdapter = fragment?.recyclerView?.adapter as TasksListAdapter
-        adapter.updateFilter(this!!.filteredTasks!!)
-        fragment?.recyclerView?.adapter?.notifyDataSetChanged()
     }
 }
