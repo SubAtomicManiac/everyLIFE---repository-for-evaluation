@@ -21,11 +21,12 @@ class TasksListAdapter(private var tasks: Array<Task>) :
     override fun getItemCount() = tasks.size
 
     override fun onBindViewHolder(viewHolder: TaskViewHolder, position: Int) {
-        viewHolder.nameLabel.text = tasks[position].name
-        viewHolder.descriptionLabel.text = tasks[position].description
+        val task = tasks[position]
+        viewHolder.nameLabel.text = task.name
+        viewHolder.descriptionLabel.text = task.description
         viewHolder.typeIconImageView.setImageDrawable(
             getTaskTypeImage(
-                tasks[position].type,
+                task.type,
                 viewHolder.itemView.context
             )
         )
