@@ -1,4 +1,4 @@
-package com.elt.application
+package com.example.everylifetask
 
 enum class TaskType {
      general,

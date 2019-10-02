@@ -1,4 +1,4 @@
-package com.elt.application
+package com.example.everylifetask
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

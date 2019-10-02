@@ -1,4 +1,4 @@
-package com.elt.application
+package com.example.everylifetask
 
 import android.content.Context
 import android.graphics.drawable.Drawable
