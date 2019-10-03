@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="filter_length">35dp</dimen>
+    <dimen name="filter_margin">15dp</dimen>
+    <dimen name="image_length">25dp</dimen>
+    <dimen name="desc_margin">50dp</dimen>
+    <dimen name="title_size">25sp</dimen>
+    <dimen name="line_thickness">1dp</dimen>
+    <dimen name="line_margin">10dp</dimen>
+    <dimen name="row_margin">7dp</dimen>
+    <dimen name="row_margin_small">5dp</dimen>
+</resources>

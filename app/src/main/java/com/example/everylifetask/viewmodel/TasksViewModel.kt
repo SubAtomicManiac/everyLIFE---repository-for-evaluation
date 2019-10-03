@@ -21,14 +21,18 @@ class TasksViewModel(val taskRepo: TasksRepositryImplementation) :
 
     override fun reloadTable(context: Context) {
         beginRefreshing()
-        taskRepo.getTasks(
-            {
-                t -> tasks = t
-                filteredTasksLiveData?.value = tasks
-                endRefreshing()
-            },
-            {t -> Log.i("uhoh","Something want wrong: ${t.message}")}
-        )
+        if (tasks == null){
+            taskRepo.getTasks(
+                {
+                        t -> tasks = t
+                    filteredTasksLiveData?.value = tasks
+                    endRefreshing()
+                },
+                {t -> Log.i("uhoh","Something want wrong: ${t.message}")}
+            )
+        } else {
+            endRefreshing()
+        }
     }
 
     override fun beginRefreshing() {
