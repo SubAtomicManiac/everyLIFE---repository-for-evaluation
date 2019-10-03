@@ -2,52 +2,44 @@ package com.example.everylifetask.viewmodel
 
 
 import android.content.Context
-import android.view.View
-import android.widget.ProgressBar
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.everylifetask.R
 import com.example.everylifetask.commons.TaskType
 import com.example.everylifetask.models.Task
 import com.example.everylifetask.api.TasksApiServicing
-import com.example.everylifetask.views.TasksListFragment
 
-class TasksViewModel(val tasksApiService: TasksApiServicing?, val fragment: TasksListFragment?) :
+class TasksViewModel(val tasksApiService: TasksApiServicing?) :
     ViewModel(), TasksViewModelInterface {
     var tasks: Array<Task>? = null
+
     var filteredTasksLiveData : MutableLiveData<Array<Task>>? = MutableLiveData<Array<Task>>()
+    var isRefreshing : MutableLiveData<Boolean>? = MutableLiveData<Boolean>(false)
+
+    override fun getFilteredTasksData() = filteredTasksLiveData
+    override fun getIsRefreshing() = isRefreshing
 
     override fun reloadTable(context: Context) {
+        Log.i("refreshing","refreshing: ${isRefreshing?.value}")
+        beginRefreshing()
+        Log.i("refreshing","refreshing: ${isRefreshing?.value}")
         tasks = tasksApiService?.getTasks(context)
         filteredTasksLiveData?.value = tasks
+        endRefreshing()
     }
 
     override fun beginRefreshing() {
-//        TODO("A: implement this so that the progressBar is shown only when loading. " +
-//                    "The progressBar should also be adjusted to be central at the top of the screen")
-        val view1: ProgressBar? = this.fragment?.view?.findViewById<ProgressBar>(R.id.progressBar)
-        view1?.visibility = View.VISIBLE
+        isRefreshing?.value = true
     }
 
     override fun endRefreshing() {
-//        TODO("A: implement this so that the progressBar is shown only when loading. ")
-        val view1: ProgressBar? = fragment?.view?.findViewById<ProgressBar>(R.id.progressBar)
-        view1?.visibility = View.INVISIBLE
+        isRefreshing?.value = false
     }
 
-    override fun getFilteredTasksData() = filteredTasksLiveData
-
     override fun filterClicked(tag: Any?) {
-//        TODO("B: implement this so that the list will show only the tasks that have the selected TaskType")
-        if (filteredTasksLiveData?.value?.get(0)?.type?.equals(tag as TaskType)!!) {
-            filteredTasksLiveData?.value = tasks
-        } else {
-            val list =
-                tasks?.filter {
-                    val taskType = tag as TaskType
-                    it.type.equals(taskType)
-                }
-            filteredTasksLiveData?.value = list?.toTypedArray()
+        filteredTasksLiveData?.value = when (tag as TaskType){
+            filteredTasksLiveData?.value?.get(0)?.type -> tasks
+            else -> tasks?.filter {it.type == tag}?.toTypedArray()
         }
     }
 }

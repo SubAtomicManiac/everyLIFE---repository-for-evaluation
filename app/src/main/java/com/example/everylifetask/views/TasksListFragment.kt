@@ -1,6 +1,7 @@
 package com.example.everylifetask.views
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -20,6 +22,7 @@ import com.example.everylifetask.models.Task
 import com.example.everylifetask.viewmodel.TasksViewModel
 import com.example.everylifetask.viewmodel.TasksViewModelFactory
 import com.example.everylifetask.viewmodel.TasksViewModelInterface
+import kotlinx.android.synthetic.main.tasks_list_fragment.*
 
 class TasksListFragment : Fragment(), LifecycleOwner{
 
@@ -33,9 +36,8 @@ class TasksListFragment : Fragment(), LifecycleOwner{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders
-            .of(this, TasksViewModelFactory(TasksApiService(),this))
+            .of(this, TasksViewModelFactory(TasksApiService()))
             .get(TasksViewModel::class.java)
-        viewModel.beginRefreshing()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,19 +57,28 @@ class TasksListFragment : Fragment(), LifecycleOwner{
         setRecyclerViewLayoutManager(currentLayoutManagerType)
 
         context?.let {
-            viewModel.reloadTable(it)
             viewModel.getFilteredTasksData()?.let{
                 it.observe(this@TasksListFragment, Observer<Array<Task>>{
                     tasks -> if (layoutAdapter == null){
                         layoutAdapter = TasksListAdapter(tasks)
                         recyclerView.adapter = layoutAdapter
-                    }
-                    else {
+                    } else {
                         layoutAdapter?.updateFilter(tasks)
                         layoutAdapter?.notifyDataSetChanged()
                     }
                 })
             }
+            viewModel.getIsRefreshing()?.let{
+                it.observe(this@TasksListFragment, Observer<Boolean>{
+                    refreshing -> if (refreshing){
+                        progressBar.visibility = View.VISIBLE
+                    } else {
+                        progressBar.visibility = View.GONE
+                    }
+                    Log.i("refreshing", "refreshing from observer $refreshing")
+                })
+            }
+            viewModel.reloadTable(it)
         }
 
         val filterGeneral: View = rootView.findViewById(R.id.filter_general)
@@ -91,7 +102,6 @@ class TasksListFragment : Fragment(), LifecycleOwner{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.endRefreshing()
     }
 
     private fun setRecyclerViewLayoutManager(layoutManagerType: LayoutManagerType) {
