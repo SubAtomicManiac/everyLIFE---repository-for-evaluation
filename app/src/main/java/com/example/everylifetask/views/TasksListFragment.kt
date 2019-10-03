@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -19,6 +18,8 @@ import com.example.everylifetask.api.TasksApiServicing
 import com.example.everylifetask.commons.LayoutManagerType
 import com.example.everylifetask.commons.TaskType
 import com.example.everylifetask.models.Task
+import com.example.everylifetask.repositry.TasksRepositryImplementation
+import com.example.everylifetask.services.TasksService
 import com.example.everylifetask.viewmodel.TasksViewModel
 import com.example.everylifetask.viewmodel.TasksViewModelFactory
 import com.example.everylifetask.viewmodel.TasksViewModelInterface
@@ -36,7 +37,7 @@ class TasksListFragment : Fragment(), LifecycleOwner{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders
-            .of(this, TasksViewModelFactory(TasksApiService()))
+            .of(this, TasksViewModelFactory(TasksRepositryImplementation(TasksService(context!!, TasksApiService()))))
             .get(TasksViewModel::class.java)
     }
 

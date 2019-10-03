@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.everylifetask.commons.TaskType
 import com.example.everylifetask.models.Task
-import com.example.everylifetask.api.TasksApiServicing
+import com.example.everylifetask.repositry.TasksRepositryImplementation
 
-class TasksViewModel(val tasksApiService: TasksApiServicing?) :
+class TasksViewModel(val taskRepo: TasksRepositryImplementation) :
     ViewModel(), TasksViewModelInterface {
     var tasks: Array<Task>? = null
 
@@ -23,8 +23,13 @@ class TasksViewModel(val tasksApiService: TasksApiServicing?) :
         Log.i("refreshing","refreshing: ${isRefreshing?.value}")
         beginRefreshing()
         Log.i("refreshing","refreshing: ${isRefreshing?.value}")
-        tasks = tasksApiService?.getTasks(context)
-        filteredTasksLiveData?.value = tasks
+        taskRepo.getTasks(
+            {
+                t -> tasks = t
+                filteredTasksLiveData?.value = tasks
+            },
+            {t -> Log.i("uhoh","Something want wrong ${t.message}")}
+        )
         endRefreshing()
     }
 

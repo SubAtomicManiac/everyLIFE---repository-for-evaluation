@@ -1,9 +1,8 @@
 package com.example.everylifetask.services
 
-import android.content.Context
-import com.example.everylifetask.api.TasksApiServicing
 import com.example.everylifetask.models.Task
+import io.reactivex.Observable
 
 interface TasksServiceInterface {
-    fun getTasks(context: Context, tasksApiServicing: TasksApiServicing): Array<Task>
+    fun getTasks(): Observable<Array<Task>>
 }
