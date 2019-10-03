@@ -24,7 +24,7 @@ class TasksViewModelTest {
         viewModel.reloadTable(androidx.test.core.app.ApplicationProvider.getApplicationContext())
 
         // Then
-        Assert.assertThat(1, equalTo(viewModel.getFilteredTasksList()?.size))
+        Assert.assertThat(1, equalTo(viewModel.FilteredTasksData()?.size))
         Assert.assertThat(1, equalTo(viewModel.getFilteredTasksList()?.get(0)?.id))
         Assert.assertThat("some name", equalTo(viewModel.getFilteredTasksList()?.get(0)?.name))
         Assert.assertThat("some description", equalTo(viewModel.getFilteredTasksList()?.get(0)?.description))
@@ -39,7 +39,6 @@ class TasksViewModelTest {
         vm.reloadTable(androidx.test.core.app.ApplicationProvider.getApplicationContext())
         var tl = vm.getFilteredTasksList()
         Assert.assertThat(tl?.size, equalTo(1))
-
     }
 
     // TODO B: Add any other relevant tests
