@@ -20,16 +20,14 @@ class TasksViewModel(val taskRepo: TasksRepositryImplementation) :
     override fun getIsRefreshing() = isRefreshing
 
     override fun reloadTable(context: Context) {
-        Log.i("refreshing","refreshing: ${isRefreshing?.value}")
         beginRefreshing()
-        Log.i("refreshing","refreshing: ${isRefreshing?.value}")
         taskRepo.getTasks(
             {
                 t -> tasks = t
                 filteredTasksLiveData?.value = tasks
                 endRefreshing()
             },
-            {t -> Log.i("uhoh","Something want wrong ${t.message}")}
+            {t -> Log.i("uhoh","Something want wrong: ${t.message}")}
         )
     }
 

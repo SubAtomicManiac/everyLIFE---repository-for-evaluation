@@ -13,20 +13,26 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.everylifetask.*
-import com.example.everylifetask.api.TasksApiService
 import com.example.everylifetask.commons.LayoutManagerType
 import com.example.everylifetask.commons.TaskType
+import com.example.everylifetask.di.DaggerActivityComponent
+import com.example.everylifetask.di.DataModule
 import com.example.everylifetask.models.Task
-import com.example.everylifetask.repositry.TasksRepositryImplementation
-import com.example.everylifetask.services.TasksService
 import com.example.everylifetask.viewmodel.TasksViewModel
 import com.example.everylifetask.viewmodel.TasksViewModelFactory
-import com.example.everylifetask.viewmodel.TasksViewModelInterface
 import kotlinx.android.synthetic.main.tasks_list_fragment.*
+import javax.inject.Inject
 
 class TasksListFragment : Fragment(), LifecycleOwner{
-
-    lateinit var viewModel: TasksViewModelInterface
+    init {
+        DaggerActivityComponent.builder()
+            .dataModule(DataModule())
+            .build()
+            .inject(this)
+    }
+    @Inject
+    lateinit var tasksViewModelFactory: TasksViewModelFactory
+    lateinit var tasksViewModel: TasksViewModel
 
     lateinit var currentLayoutManagerType: LayoutManagerType
     lateinit var recyclerView: RecyclerView
@@ -35,8 +41,8 @@ class TasksListFragment : Fragment(), LifecycleOwner{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders
-            .of(this, TasksViewModelFactory(TasksRepositryImplementation(TasksService(context!!, TasksApiService()))))
+        tasksViewModel = ViewModelProviders
+            .of(this, tasksViewModelFactory)
             .get(TasksViewModel::class.java)
     }
 
@@ -57,7 +63,7 @@ class TasksListFragment : Fragment(), LifecycleOwner{
         setRecyclerViewLayoutManager(currentLayoutManagerType)
 
         context?.let {
-            viewModel.getFilteredTasksData()?.let{
+            tasksViewModel.getFilteredTasksData()?.let{
                 it.observe(this@TasksListFragment, Observer<Array<Task>>{
                     tasks -> if (layoutAdapter == null){
                         layoutAdapter = TasksListAdapter(tasks)
@@ -68,7 +74,7 @@ class TasksListFragment : Fragment(), LifecycleOwner{
                     }
                 })
             }
-            viewModel.getIsRefreshing()?.let{
+            tasksViewModel.getIsRefreshing()?.let{
                 it.observe(this@TasksListFragment, Observer<Boolean>{
                     refreshing -> if (refreshing){
                         progressBar.visibility = View.VISIBLE
@@ -78,7 +84,7 @@ class TasksListFragment : Fragment(), LifecycleOwner{
                     Log.i("refreshing", "refreshing from observer $refreshing")
                 })
             }
-            viewModel.reloadTable(it)
+            tasksViewModel.reloadTable(it)
         }
         return rootView
     }
@@ -86,16 +92,16 @@ class TasksListFragment : Fragment(), LifecycleOwner{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         filter_general.setOnClickListener {
-            viewModel.filterClicked(TaskType.general)
+            tasksViewModel.filterClicked(TaskType.general)
         }
         filter_medication.setOnClickListener {
-            viewModel.filterClicked(TaskType.medication)
+            tasksViewModel.filterClicked(TaskType.medication)
         }
         filter_hydration.setOnClickListener {
-            viewModel.filterClicked(TaskType.hydration)
+            tasksViewModel.filterClicked(TaskType.hydration)
         }
         filter_nutrition.setOnClickListener {
-            viewModel.filterClicked(TaskType.nutrition)
+            tasksViewModel.filterClicked(TaskType.nutrition)
         }
     }
 
