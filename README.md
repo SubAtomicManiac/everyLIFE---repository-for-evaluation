@@ -1,4 +1,5 @@
 Improvements that were implemented:
+
     Created packages to organise code
     Separated enum for layout manager into separate file
     Separated service implementation and interface into separate files
@@ -29,16 +30,20 @@ Improvements that were implemented:
     Added landscape layout variant to take advantage of screen dimensions
 
 Improvements still to make:
+
     Create a view to display errors to user when getTasks fails
     Use observers or named functions/methods to handle callback on subscribe method of getTasks()
 
 Tests to Implement:
+
     Use mockito, RxMocks and Junit to implement the following unit tests:
+
         reloadTable
         filterClicked
         getTasks
 
     Use Instrumentation tests:
+    
         To test configuration test
         To test clicking on filter item
         Combination of configuration and clicking on filter item
