@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.everylifetask.*
 import com.example.everylifetask.api.TasksApiService
-import com.example.everylifetask.api.TasksApiServicing
 import com.example.everylifetask.commons.LayoutManagerType
 import com.example.everylifetask.commons.TaskType
 import com.example.everylifetask.models.Task
@@ -82,27 +81,19 @@ class TasksListFragment : Fragment(), LifecycleOwner{
             viewModel.reloadTable(it)
         }
 
-        val filterGeneral: View = rootView.findViewById(R.id.filter_general)
-        filterGeneral.setOnClickListener {
+        filter_general.setOnClickListener {
             viewModel.filterClicked(TaskType.general)
         }
-        val filterMedication: View = rootView.findViewById(R.id.filter_medication)
-        filterMedication.setOnClickListener {
+        filter_medication.setOnClickListener {
             viewModel.filterClicked(TaskType.medication)
         }
-        val filterHydration: View = rootView.findViewById(R.id.filter_hydration)
-        filterHydration.setOnClickListener {
+        filter_hydration.setOnClickListener {
             viewModel.filterClicked(TaskType.hydration)
         }
-        val filterNutrition: View = rootView.findViewById(R.id.filter_nutrition)
-        filterNutrition.setOnClickListener {
+        filter_nutrition.setOnClickListener {
             viewModel.filterClicked(TaskType.nutrition)
         }
         return rootView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun setRecyclerViewLayoutManager(layoutManagerType: LayoutManagerType) {
