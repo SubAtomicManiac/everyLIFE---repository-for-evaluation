@@ -27,10 +27,10 @@ class TasksViewModel(val taskRepo: TasksRepositryImplementation) :
             {
                 t -> tasks = t
                 filteredTasksLiveData?.value = tasks
+                endRefreshing()
             },
             {t -> Log.i("uhoh","Something want wrong ${t.message}")}
         )
-        endRefreshing()
     }
 
     override fun beginRefreshing() {

@@ -80,7 +80,11 @@ class TasksListFragment : Fragment(), LifecycleOwner{
             }
             viewModel.reloadTable(it)
         }
+        return rootView
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         filter_general.setOnClickListener {
             viewModel.filterClicked(TaskType.general)
         }
@@ -93,7 +97,6 @@ class TasksListFragment : Fragment(), LifecycleOwner{
         filter_nutrition.setOnClickListener {
             viewModel.filterClicked(TaskType.nutrition)
         }
-        return rootView
     }
 
     private fun setRecyclerViewLayoutManager(layoutManagerType: LayoutManagerType) {
